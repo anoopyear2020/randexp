@@ -2,7 +2,7 @@ class Randexp
   class Parser
     def self.parse(source)
       case
-      when source =~ /^(.*)(\*|\*\?|\+|\+\?|\?)$/ && balanced?($1, $2)
+      when source =~ /^(.*)(\*|\*\?|\+|\+\?|\?)$/ && balanced?($1, $2) && !escaped?($1)
         parse_quantified($1, $2.to_sym)                                 # ends with *, +, or ?: /(..)?/
       when source =~ /^(.*)\{(\d+)\,(\d+)\}$/ && balanced?($1, $2)
         parse_quantified($1, ($2.to_i)..($3.to_i))                      #ends with a range: /(..){..,..}/
@@ -31,6 +31,10 @@ class Randexp
       else
         nil
       end
+    end
+
+    def self.escaped?(source)
+      return source.last == '\\'
     end
 
     def self.parse_quantified(source, multiplicity)

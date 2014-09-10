@@ -6,4 +6,4 @@ vendor
 .bundle
 Gemfile.lock
 .rvmrc
-
+.idea/
